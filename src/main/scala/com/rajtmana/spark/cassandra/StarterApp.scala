@@ -12,6 +12,8 @@ class SparkCassandraStarter()
 	val conf = new SparkConf()
 				.set("spark.cassandra.connection.host", "localhost")
 				.set("spark.driver.allowMultipleContexts", "true")
+				.setAppName("SparkCassandraStarter")
+	
 	val sc = new SparkContext(conf)
 	
 	//Variables for the key spaces and tables
@@ -79,10 +81,10 @@ class SparkCassandraStarter()
 	{
 		//SQL like way of processing records		
 		val userRow = sc.cassandraTable(keySpaceName, tableUsers).first
-		sc.cassandraTable(keySpaceName, tableWords).select("word").toArray.foreach(println)
-		sc.cassandraTable(keySpaceName, tableWords).select("count").toArray.foreach(println)
-		sc.cassandraTable(keySpaceName, tableUsers).select("username").toArray.foreach(println)
-		sc.cassandraTable(keySpaceName, tableUsers).select("emails").toArray.foreach(println)
+		sc.cassandraTable(keySpaceName, tableWords).select("word").collect.foreach(println)
+		sc.cassandraTable(keySpaceName, tableWords).select("count").collect.foreach(println)
+		sc.cassandraTable(keySpaceName, tableUsers).select("username").collect.foreach(println)
+		sc.cassandraTable(keySpaceName, tableUsers).select("emails").collect.foreach(println)
 	}
 	
 	def cleanupCassandraObjects()
