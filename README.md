@@ -6,7 +6,10 @@ This is a repository containing "getting started" kind of scala code for using A
 
 Note that all these code samples are developed and tested on a single node Cassandra and single node Spark running on a Macbook Pro with OSX 10.9.5
 
-DISCLAIMER: Note that the code may not be properly formatted or may not follow all the best practices of proper scala coding. The whole idea is to expose and educate the Spark-Cassandra integration features.
+**DISCLAIMER**
+
+1. The code may not be properly formatted or may not follow all the best practices of proper scala coding. The whole idea is to expose and educate the Spark-Cassandra integration features.
+2. Absolutely no warranty on the code
 
 ## Pre-Requisites
 1. Make sure that Cassandra is running in your machine
@@ -18,6 +21,8 @@ DISCLAIMER: Note that the code may not be properly formatted or may not follow a
 
 ## How to Run
 1. Make sure that the code is compiling in your setup. For that run ```./compile.sh ```
-1. Run your code by giving the application name to the run script as the first command line option. For that run ```./run.sh com.rajtmana.spark.cassandra.StarterApp```
+2. Run your code by giving the application name to the run script as the first command line option. For that run ```./run.sh com.rajtmana.spark.cassandra.StarterApp```
+3. Each application is separated out in separate files are supposed to be run independently and serves its own unique purpose. 
+4. Each application will setup the required Cassandra keyspace/tables requred to run that application and at the end of the run, all of them will be destroyed so that the application run is not polluting your setup in anyway
 
 # Follow me.... @rajtmana
