@@ -1,7 +1,8 @@
 # Apache Spark - Apache Cassandra Integration
 
 ## Introduction
-This is a repository containing "getting started" kind of scala code for using Apache Spark with Apache Cassandra. All the code base given in this repository are run on the following versions of the softawres
+This is a repository containing "getting started" kind of scala code for using Apache Spark with Apache Cassandra. All the code base given in this repository are run on the following versions of the softawres:
+
 1. Apache Spark - Built from the latest code from the trunk
 2. Apache Cassandra - Built from the latest code from the trunk
 3. Datastax Spark Cassandra Connector - Built from the latest code from the trunk
@@ -25,7 +26,7 @@ Note that all these code samples are developed and tested on a single node Cassa
 ## Code Sample List
 1. com.rajtmana.spark.cassandra.StarterApp - This is a starter application that is creating some RDDs, reading/writing from/to Cassandra tables
 2. com.rajtmana.spark.cassandra.DataTypesApp - This is an application that is used to create a Cassandra table with various complex data types, save data into those tables and access them. The goal is to demonstrate the use of various complex data types and how they have to be dealt with while saving it into Cassandra tables
-3. com.rajtmana.spark.cassandra.MapReducePrimerApp - This is an application that implements a primer version of a typical map/reduce kind of use case. The example used here is a bank account transactions. This summarizes various parameters by account such as total of transaction amounts, lowest of the transaction amounts, highest of the transaction amounts, average of the transaction amounts per account. The transaction table is created in Cassandra, sample records have been filled in, read the values from the Cassandra tables and did all the activities.
+3. com.rajtmana.spark.cassandra.MapReducePrimerApp - This is an application that implements a primer version of a typical map/reduce kind of use case. The example used here is a bank account transactions of multiple accounts. This summarizes various parameters by account such as total of transaction amounts, lowest of the transaction amounts, highest of the transaction amounts, average of the transaction amounts per account. The transaction table is created in Cassandra, sample records have been filled in, read the values from the Cassandra tables and did all the activities.
 
 ## How to Run
 1. Make sure that the code is compiling in your setup. For that run ```./compile.sh ```
