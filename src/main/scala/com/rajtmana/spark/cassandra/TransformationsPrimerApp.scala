@@ -83,10 +83,10 @@ class TransformationsPrimer()
 						.map(row => (row.get[String]("accno"), row.get[Double]("amount")))		//Create the account no, transaction amount tuples
 						
 		//Get the list of minimum deposits by account				
-		val minDeposits = deposits.reduceByKey(Functions.fMin)
+		val minDeposits = deposits.reduceByKey(TransformationsPrimer.fMin)
 		
 		//Get the list of maximum deposits by account
-		val maxDeposits = deposits.reduceByKey(Functions.fMax)
+		val maxDeposits = deposits.reduceByKey(TransformationsPrimer.fMax)
 		
 		//Group by account, get the minimum and maximum deposits
 		val minAndMaxDeposits = minDeposits.union(maxDeposits).groupByKey().sortByKey().collect()
@@ -156,7 +156,7 @@ class TransformationsPrimer()
 }
 
 //Function definitions that can be used in multiple places
-object Functions {
+object TransformationsPrimer {
 	val fSum = (a: Double, b:Double) => a + b
 	val fMin = (a: Double, b:Double) => (if(a < b) a else b)
 	val fMax = (a: Double, b:Double) => (if(a > b) a else b)
@@ -177,10 +177,10 @@ object TransformationsPrimerApp {
 	  transformationsPrimer.accessData()
 	  
 	  println("Printing the values from transformExample1 operations")
-	  transformationsPrimer.transformExample1(Functions.fSum, "Total Amount")
-	  transformationsPrimer.transformExample1(Functions.fMin, "Lowest Amount")
-	  transformationsPrimer.transformExample1(Functions.fMax , "Highest Amount")
-	  transformationsPrimer.transformExample1(Functions.fAvg, "Average Amount")
+	  transformationsPrimer.transformExample1(TransformationsPrimer.fSum, "Total Amount")
+	  transformationsPrimer.transformExample1(TransformationsPrimer.fMin, "Lowest Amount")
+	  transformationsPrimer.transformExample1(TransformationsPrimer.fMax , "Highest Amount")
+	  transformationsPrimer.transformExample1(TransformationsPrimer.fAvg, "Average Amount")
 
 	  println("Printing the values from transformExample2 operations")
 	  transformationsPrimer.transformExample2()
