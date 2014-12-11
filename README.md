@@ -6,6 +6,7 @@ This is a repository containing "getting started" kind of scala code for using A
 1. Apache Spark - Built from the latest code from the trunk
 2. Apache Cassandra - Built from the latest code from the trunk
 3. Datastax Spark Cassandra Connector - Built from the latest code from the trunk
+4. Scala version 2.10.4
 
 Note that all these code samples are developed and tested on a single node Cassandra and single node Spark running on a Macbook Pro with OSX 10.9.5
 
