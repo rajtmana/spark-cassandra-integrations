@@ -23,12 +23,13 @@ Note that all these code samples are developed and tested on a single node Cassa
 3. Make sure that Spark is available and ready to run in your machine
 4. The run.sh script file contains paths to many of the libraries such as the Spark bin directory, paths to the spark-cassandra-connector jar, the application jar etc. So before running the first application, make sure that all the paths are relevant to your setup. The rule of thumb on where to make change is that wherever you see a [FILLUP], your changes are required there. You are OK to leave the others. There are some lines marked with [OPTIONAL], you are OK to leave it with the defaults
 
-## Code Sample List
+## Applications List
 1. com.rajtmana.spark.cassandra.StarterApp - This is a starter application that is creating some RDDs, reading/writing from/to Cassandra tables
 2. com.rajtmana.spark.cassandra.DataTypesApp - This is an application that is used to create a Cassandra table with various complex data types, save data into those tables and access them. The goal is to demonstrate the use of various complex data types and how they have to be dealt with while saving it into Cassandra tables
 3. com.rajtmana.spark.cassandra.MapReducePrimerApp - This is an application that implements a primer version of a typical map/reduce kind of use case. The example used here is a bank account transactions of multiple accounts. This summarizes various parameters by account such as total of transaction amounts, lowest of the transaction amounts, highest of the transaction amounts, average of the transaction amounts per account. The transaction table is created in Cassandra, sample records have been filled in, read the values from the Cassandra tables and did all the activities.
 4. com.rajtmana.spark.cassandra.TransformationsPrimerApp - This is an application that is using a bank account transaction use case and demonstrate the use of many important Spark transformations and actions. The transaction table is created in Cassandra, sample records have been filled in, read the values from the Cassandra tables and did all the activities.
 5. com.rajtmana.spark.cassandra.TransformationsApp - This is an application covering more Spark transformations using the bank's black listed accounts spotted for unusual transactions. The account list is created in Cassandra, sample records have been filled in, read the values from the Cassandra table and did all the activities.
+6. com.rajtmana.spark.cassandra.DataAccessPrimerApp - This is an application covering various use cases of accessing data from Cassandra tables. This includes full table selection, selection with filtering, receiving the selected records into Scala objects using case classes.
 
 ## How to Run
 1. Make sure that the code is compiling in your setup. For that run ```./compile.sh ```
