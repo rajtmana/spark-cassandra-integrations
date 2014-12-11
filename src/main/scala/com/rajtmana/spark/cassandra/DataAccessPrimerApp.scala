@@ -51,6 +51,8 @@ class DataAccessPrimer()
 		val rdd1 = sc.cassandraTable(keySpaceName, tableTrans)
 		rdd1.foreach(row => println( row.get[String]("accno") + ", " + row.get[String]("date")  + ", " +row.get[String]("id")  + ", " + row.get[String]("amount")))
 		
+		//Spark accummulators are a powerful way to accummulate values while iterating through the records
+		
 		//Select only a few columns in the table
 		val rdd2 = sc.cassandraTable(keySpaceName, tableTrans)
 					.select("accno", "amount")
@@ -60,7 +62,14 @@ class DataAccessPrimer()
 		val rdd3 = sc.cassandraTable(keySpaceName, tableTrans)
 					.select("accno", "amount")
 					.where("accno = ? and date = ?", "abcef0", "2014-12-10")
+					.collect()
 		rdd3.foreach(row => println( row.get[String]("accno") + ", " + row.get[String]("amount")))
+		
+		//Use Spark accummulator to capture the running total of the selected account
+		val accTotal = sc.accumulator(0.0, "Transaction Amount Total")
+		rdd3.foreach(row => accTotal += row.get[Double]("amount"))
+		println("Total of the account abcef0: " + accTotal.value.toString)
+		
 		
 		//Mapping rows to (case) objects, select including a where clause
 		val rdd4 = sc.cassandraTable[Account](keySpaceName, tableTrans)
