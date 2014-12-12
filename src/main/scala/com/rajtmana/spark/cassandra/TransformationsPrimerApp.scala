@@ -156,11 +156,13 @@ class TransformationsPrimer()
 }
 
 //Function definitions that can be used in multiple places
+//The functions are defined in different styles to demonstrate the flexibility of Scala language in defining functions
+//Irrespective of the style, all the function definitions are equivalent
 object TransformationsPrimer {
 	val fSum = (a: Double, b:Double) => a + b
-	val fMin = (a: Double, b:Double) => (if(a < b) a else b)
-	val fMax = (a: Double, b:Double) => (if(a > b) a else b)
-	val fAvg = (a: Double, b:Double) => (a + b)/2.0
+	def fMin (a: Double, b:Double): Double = { (if(a < b) a else b) }
+	def fMax (a: Double, b:Double): Double = (if(a > b) a else b)
+	def fAvg (a: Double, b:Double) = (a + b)/2.0
 }
 
 object TransformationsPrimerApp {
