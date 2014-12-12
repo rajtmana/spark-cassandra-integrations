@@ -13,8 +13,8 @@ Note that all these code samples are developed and tested on a single node Cassa
 **DISCLAIMER**
 
 1. The code may not be properly formatted (all the text editors are not made equal) or may not follow all the best practices of proper scala coding. The whole idea is to expose and to educate the Spark-Cassandra integration features.
-2. Error handling in the code is completely avoided as this is not a production code and the goal is not to demonstrate writing production quality code that can be readily used 
-3. Absolutely no warranty on the code
+2. Error handling in the code is completely avoided as sprinkling of a lot of that will take away the attention that is to be given to the functionality that is being demonstrated.
+3. Absolutely no warranty on the code.
 
 # Follow me.... @rajtmana
 

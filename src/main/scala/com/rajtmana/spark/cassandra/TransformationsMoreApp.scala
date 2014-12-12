@@ -13,7 +13,7 @@ class TransformationsMore()
 	val conf = new SparkConf()
 				.set("spark.cassandra.connection.host", "localhost")
 				.set("spark.driver.allowMultipleContexts", "true")
-				.setAppName("TransformationsPrimer")
+				.setAppName("TransformationsMore")
 	
 	val sc = new SparkContext(conf)
 	
@@ -100,7 +100,7 @@ object TransformationsMoreApp {
 	  println("Summary of the RDDs")
 	  transformationsMore.accessData()
 	  
-	  println("Printing the values from transformExample1 operations")
+	  println("Printing the values from transformExample operations")
 	  transformationsMore.transformExample()
 
 	  transformationsMore.cleanupCassandraObjects()
