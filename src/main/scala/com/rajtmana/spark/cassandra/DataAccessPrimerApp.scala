@@ -47,19 +47,22 @@ class DataAccessPrimer()
 	
 	def accessData()
 	{
+		//These RDDs are going to be used again and again and hence used caching upfront
+		val fullTable = sc.cassandraTable(keySpaceName, tableTrans).cache
+		val fullTableToFullObject = sc.cassandraTable[Account](keySpaceName, tableTrans).cache
+		val fullTableToShortObject = sc.cassandraTable[ShortAccount](keySpaceName, tableTrans).cache
+
 		//List the records by reading all the values from the table
-		val rdd1 = sc.cassandraTable(keySpaceName, tableTrans)
-		rdd1.foreach(row => println( row.get[String]("accno") + ", " + row.get[String]("date")  + ", " +row.get[String]("id")  + ", " + row.get[String]("amount")))
+		fullTable.foreach(row => println( row.get[String]("accno") + ", " + row.get[String]("date")  + ", " +row.get[String]("id")  + ", " + row.get[String]("amount")))
 		
 		//Spark accummulators are a powerful way to accummulate values while iterating through the records
 		
 		//Select only a few columns in the table
-		val rdd2 = sc.cassandraTable(keySpaceName, tableTrans)
-					.select("accno", "amount")
+		val rdd2 = fullTable.select("accno", "amount")
 		rdd2.foreach(row => println( row.get[String]("accno") + ", " + row.get[String]("amount")))
 		
 		//Select only a few columns and only a few records in the table
-		val rdd3 = sc.cassandraTable(keySpaceName, tableTrans)
+		val rdd3 = 	fullTable
 					.select("accno", "amount")
 					.where("accno = ? and date = ?", "abcef0", "2014-12-10")
 					.collect()
@@ -72,7 +75,7 @@ class DataAccessPrimer()
 		
 		
 		//Mapping rows to (case) objects, select including a where clause
-		val rdd4 = sc.cassandraTable[Account](keySpaceName, tableTrans)
+		val rdd4 = 	fullTableToFullObject
 					.select("accno", "date", "id", "amount")
 					.where("accno = ? and date = ?", "abcef1", "2014-12-11")
 		rdd4.foreach(Account => println(Account.accno + ", " + Account.amount))
@@ -80,7 +83,7 @@ class DataAccessPrimer()
 		//Mapping rows to (case) objects, select including a where clause. 
 		//The object contains only a selected fields as compared to the selection list
 		//This case also demonstrates the use of a selection statement containing more columns and the receiving object has less columns
-		val rdd5 = sc.cassandraTable[ShortAccount](keySpaceName, tableTrans)
+		val rdd5 = 	fullTableToShortObject
 					.select("accno", "date", "id", "amount")
 					.where("accno = ? and date = ?", "abcef2", "2014-12-12")
 		rdd5.foreach(ShortAccount => println(ShortAccount.accno + ", " + ShortAccount.amount))
