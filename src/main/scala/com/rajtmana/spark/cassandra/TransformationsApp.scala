@@ -7,9 +7,19 @@ import com.datastax.spark.connector._
 import com.datastax.spark.connector.cql.CassandraConnector
 import com.datastax.driver.core.utils.UUIDs
 
-class Transformations()
+object Transformations
 {
 	val fSum = (a: Int, b: Int) => a + b
+	
+	//Map or flatmap can take any complicated functions as long as it conforms to a given signature. 
+	//In the case of flatmap, it takes a row (here Cassandra) and returns a list/seq
+	def fAccDate (row: CassandraRow) = { 
+		row.get[String]("accnos").split(",").toList.map(x => (x,row.get[String]("date"))).toList
+	}
+}
+class Transformations()
+{
+	
 	// Create the Spark configuration and the spark context
 	val conf = new SparkConf()
 				.set("spark.cassandra.connection.host", "localhost")
@@ -55,13 +65,15 @@ class Transformations()
 	def transformExample()
 	{
 		val rdd = sc.cassandraTable(keySpaceName, tableUnusualTrans)		// Read the unusual transaction records
+		val accsWithDate = rdd.flatMap(Transformations.fAccDate).collect()
+		println("Unusual transactions detected by account with date")
+		accsWithDate.foreach(println)
+
 		val flattenedList = rdd.flatMap(row =>row.get[String]("accnos").split(","))
 								.map(acc => (acc, 1))
 								.countByKey()
-								
 		println("Number of times unusual transactions detected by account")
-		flattenedList.foreach(println)
-
+		flattenedList.foreach(println)	
 		
 		val accList = rdd.flatMap(row =>row.get[String]("accnos").split(","))
 							.distinct()
@@ -74,7 +86,7 @@ class Transformations()
 		val accCount = rdd.flatMap(row =>row.get[String]("accnos").split(","))
 						.distinct()
 						.map(acc => 1)
-						.reduce(fSum)
+						.reduce(Transformations.fSum)
 		
 		println("Number of Accounts where unusual transactions detected")				
 		println (accCount) 
