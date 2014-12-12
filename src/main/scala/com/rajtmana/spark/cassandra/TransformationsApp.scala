@@ -68,6 +68,13 @@ class Transformations()
 		val accsWithDate = rdd.flatMap(Transformations.fAccDate).collect()
 		println("Unusual transactions detected by account with date")
 		accsWithDate.foreach(println)
+		
+		val accsWithDateByDate = rdd.flatMap(Transformations.fAccDate)
+									.map{case (accs, date) => (date, accs)}
+									.sortByKey()
+									.countByKey()
+		println("Number of unusual transactions detected on accounts by date")
+		accsWithDateByDate.foreach(println)
 
 		val flattenedList = rdd.flatMap(row =>row.get[String]("accnos").split(","))
 								.map(acc => (acc, 1))
