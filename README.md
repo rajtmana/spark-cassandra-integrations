@@ -1,4 +1,4 @@
-# Apache Spark - Apache Cassandra Integration
+# Apache Spark/Apache Cassandra Applications in Scala
 
 ## Introduction
 This is a repository containing "getting started" kind of scala code for using Apache Spark with Apache Cassandra. All the code base given in this repository are run on the following versions of the softawres:
