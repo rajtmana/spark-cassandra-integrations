@@ -33,6 +33,7 @@ Note that all these code samples are developed and tested on a single node Cassa
 6. com.rajtmana.spark.cassandra.TransformationsMoreApp - Cassandra CQL does not support table joins. But Spark provides powerful features in their transformations library to do that. This is sample application where a bank transactions coming from one Cassandra table and the IP addresses of these transactions coming from another table. Using join/cogroup transformation, the tables are joined and the relevant information is taken out
 7. com.rajtmana.spark.cassandra.DataAccessPrimerApp - This is an application covering various use cases of accessing data from Cassandra tables. This includes full table selection, selection with filtering, receiving the selected records into Scala objects using case classes and used Spark Accummulators to collect values while processing the RDD records.
 8. com.rajtmana.spark.cassandra.TableJoinsApp - This is an application demonstrating the Many-to-One, One-to-Many, One-to-One Cassandra table joins. Cassandra tables are created for Account, Transactions, and IP Address. All these relationships are modelled mainly using Spark's join in conjunction with map and some other transformations.
+9. com.rajtmana.spark.cassandra.SparkSQLPrimerApp - Cassandra CQL does not support WHERE clauses on non-indexed/primary key columns. Spark SQL supports. This application demonstrates that.
 
 
 ## How to Run
