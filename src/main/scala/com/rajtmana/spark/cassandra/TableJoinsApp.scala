@@ -18,10 +18,14 @@ class TableJoins()
 	val sc = new SparkContext(conf)
 	
 	//Variables for the key spaces and tables
+	//Table Realation: account to trans => One to Many
+	//Table Relation: trans to account => Many to One
+	//Table Relation: account to ips => One to One
+	//All the relationships are modelled with the key accno
 	val keySpaceName = "test"
-	val tableAcc = "account"
-	val tableTrans = "trans"
-	val tableIP = "ips"
+	val tableAcc = "account"				//Accounts master table
+	val tableTrans = "trans"				//Transaction table
+	val tableIP = "ips"						//IP Addresses from where the account activity came in
 				
 	def setup()
 	{
@@ -73,6 +77,9 @@ class TableJoins()
 
 	def joinTables()
 	{
+		//Spark supports caching and if an RDD is being used again and again, it makes sense to use caching mechanism
+		//Hence all the main data sets have been cached
+		//Here the number of records are very less so caching makes sense. Use your discretion while doing so when deploying production code
 		val rddAcc = sc.cassandraTable(keySpaceName, tableAcc).cache				// Read the account master table
 		val rddTrans = sc.cassandraTable(keySpaceName, tableTrans).cache			// Read the transaction records
 		val rddIPAddress = sc.cassandraTable(keySpaceName, tableIP).cache					// Read the IP table

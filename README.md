@@ -20,7 +20,7 @@ Note that all these code samples are developed and tested on a single node Cassa
 
 ## Pre-Requisites
 1. Make sure that Cassandra is running in your machine
-2. Make sure that you have Scala 2.10.4 or above
+2. Make sure that Scala with sbt is working in your machine
 3. Make sure that Spark is available and ready to run in your machine
 4. The run.sh script file contains paths to many of the libraries such as the Spark bin directory, paths to the spark-cassandra-connector jar, the application jar etc. So before running the first application, make sure that all the paths are relevant to your setup. The rule of thumb on where to make change is that wherever you see a [FILLUP], your changes are required there. You are OK to leave the others. There are some lines marked with [OPTIONAL], you are OK to leave it with the defaults
 
