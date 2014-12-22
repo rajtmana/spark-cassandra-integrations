@@ -35,6 +35,7 @@ Note that all these code samples are developed and tested on a single node Cassa
 8. com.rajtmana.spark.cassandra.TableJoinsApp - This is an application demonstrating the Many-to-One, One-to-Many, One-to-One Cassandra table joins. Note that these are not CQL/SQL table joins. This is Spark RDD transformation "join". Cassandra tables are created for Account, Transactions, and IP Address. All these relationships are modelled mainly using Spark's join in conjunction with map and some other transformations.
 9. com.rajtmana.spark.cassandra.OuterJoinTransformationsApp - Using Spark RDD tranformations leftOuterJoin/rightOuterJoin in conjunction with Scala pattern matching, some wonderful things could be done without writing lots of code. 
 10. com.rajtmana.spark.cassandra.SparkSQLPrimerApp - Cassandra CQL does not support WHERE clauses on non-indexed/primary key columns. Spark SQL supports. This application demonstrates that.
+11. com.rajtmana.spark.cassandra.DataAccessAuditUseCaseApp - For analysis purposes, auditing purposes, you may have to create a subset of a given table after doing many transformations. Once you have the resultant RDD, saving that to a Cassandra table is a very simple operation. This application demonstrates the use of one such use case. 
 
 
 ## How to Run
