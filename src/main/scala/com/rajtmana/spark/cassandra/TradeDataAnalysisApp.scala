@@ -102,6 +102,16 @@ class TradeDataAnalysis()
 		println("Top 10 penny stocks")
 		rdd5.foreach(println)
 
+		//Aggregate numbers
+		val strSQL6 = "SELECT count(*) as rowcount, max(closeamount) as maxclose, min(closeamount) as minclose,  avg(closeamount) as avgclose, " + 
+					  "max(sharevolume) as maxvolume, min(sharevolume) as minvolume, avg(sharevolume) as avgvolume " +	
+					  "FROM " +
+					  tableTrade
+					 
+		val rdd6 = sql(strSQL6).collect()
+		println("Aggregate Numbers")
+		println("[Row Count,Max Close,Min Close,Avg Close,Max Volume,Min Volume,Avg Volume]")
+		rdd6.foreach(println)
 	}
 	
 	
