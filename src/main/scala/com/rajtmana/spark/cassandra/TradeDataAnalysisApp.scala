@@ -34,9 +34,9 @@ class TradeDataAnalysis()
 	
 	def fillUpData()
 	{
-		//The followign lines of code is real power packed and deceptively simple
+		//The following lines of code is real power packed and deceptively simple
 		//First the data from a CSV file is loaded, did the transformation 
-		//Concerted the row into a case class object 
+		//Converted the row into a case class object 
 		//Just one call saveToCassandra does the writing to the cassandra table 
 		val tradeRecs = sc.textFile("data/NASDAQ_20101105.csv")
 						.map(line => line.split(","))
@@ -83,6 +83,25 @@ class TradeDataAnalysis()
 		val rdd3 = sql(strSQL3).take(10)
 		println("Top 10 volume trades")
 		rdd3.foreach(println)
+
+		//Top 10 high value stocks
+		val strSQL4 = "SELECT tickersymbol, tradedate, closeamount " + 
+					 "FROM " +
+					 tableTrade + " " +  
+					 "ORDER BY closeamount desc"
+		val rdd4 = sql(strSQL4).take(10)
+		println("Top 10 high value stocks")
+		rdd4.foreach(println)
+
+		//Top 10 penny stocks
+		val strSQL5 = "SELECT tickersymbol, tradedate, closeamount " + 
+					 "FROM " +
+					 tableTrade + " " +  
+					 "ORDER BY closeamount"
+		val rdd5 = sql(strSQL5).take(10)
+		println("Top 10 penny stocks")
+		rdd5.foreach(println)
+
 	}
 	
 	
