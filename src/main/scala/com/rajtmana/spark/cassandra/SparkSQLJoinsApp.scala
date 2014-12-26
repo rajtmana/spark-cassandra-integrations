@@ -8,6 +8,8 @@ import org.apache.spark.sql.cassandra.CassandraSQLContext
 import org.apache.spark.sql.SQLContext
 import com.datastax.driver.core.utils.UUIDs
 
+case class Company(companyid: String, companyname: String, city: String)
+case class Item(itemno: String, itemname: String, itemunit: String)
 case class Customer(customerid: String, customername: String)
 case class Order(orderno: String, date: String, customerid: String)
 case class OrderLineItem(orderno: String, itemno: String, itemname: String, quantity: Int, amount: Double)
@@ -24,6 +26,8 @@ class SparkSQLJoins()
 	
 	//Variables for the key spaces and tables
 	val keySpaceName = "test"
+	val tableCompany = "tablecompany"
+	val tableItem = "tableitem"
 	val tableCustomer = "tablecustomer"					
 	val tableOrder = "tableorder"					
 	val tableOrderLineItem = "tablelineitem"
@@ -33,6 +37,8 @@ class SparkSQLJoins()
 	{
 		CassandraConnector(conf).withSessionDo { session =>
 		  session.execute("CREATE KEYSPACE IF NOT EXISTS " + keySpaceName + " WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1 }")
+		  session.execute("CREATE TABLE IF NOT EXISTS " + keySpaceName + "." + tableCompany + " (companyid text PRIMARY KEY, companyname text, city text)")
+		  session.execute("CREATE TABLE IF NOT EXISTS " + keySpaceName + "." + tableItem + " (itemno text PRIMARY KEY, itemname text, itemunit text)")
 		  session.execute("CREATE TABLE IF NOT EXISTS " + keySpaceName + "." + tableCustomer + " (customerid text PRIMARY KEY, customername text)")
 		  session.execute("CREATE TABLE IF NOT EXISTS " + keySpaceName + "." + tableOrder + " (orderno text, date text, customerid text, PRIMARY KEY ((orderno,date),customerid))")
 		  session.execute("CREATE TABLE IF NOT EXISTS " + keySpaceName + "." + tableOrderLineItem + " (orderno text, itemno text, itemname text, quantity int, amount double, PRIMARY KEY (orderno,itemno))")
@@ -41,13 +47,30 @@ class SparkSQLJoins()
 	
 	def fillUpData()
 	{
+		for(i <- 0 to 3){
+			val companyid = "comp" + i.toString
+			val companyname = "Company " + companyid
+			val city = "London"
+			val companyCollection = sc.parallelize(Seq((companyid, companyname, city)))
+			companyCollection.saveToCassandra(keySpaceName, tableCompany, SomeColumns("companyid", "companyname", "city"))
+		}
+				
 		for(i <- 0 to 10){
 			val customerid = "cust" + i.toString
 			val customername = "Customer " + customerid
 			val customerCollection = sc.parallelize(Seq((customerid, customername)))
 			customerCollection.saveToCassandra(keySpaceName, tableCustomer, SomeColumns("customerid", "customername"))
-
 		}
+		for(i <- 0 to 10){
+			for(j <- 1 to 3){
+				val itemno = "item-" + i.toString + "-"+ j.toString
+				val itemname = "Name of " + itemno
+				val itemunit = "Pcs"
+				val itemCollection = sc.parallelize(Seq((itemno, itemname,itemunit)))
+				itemCollection.saveToCassandra(keySpaceName, tableItem, SomeColumns("itemno", "itemname","itemunit"))
+			}
+		}
+		
 		for(i <- 1 to 10){
 			val orderno = "order" + i.toString //Get an evenly distributed number of accounts for having different transactions
 			val customerid = "cust" + (i % 5).toString
@@ -68,6 +91,8 @@ class SparkSQLJoins()
 	def accessData()
 	{
 		//List the records
+		sc.cassandraTable(keySpaceName, tableCompany).foreach(println)
+		sc.cassandraTable(keySpaceName, tableItem).foreach(println)
 		sc.cassandraTable(keySpaceName, tableCustomer).foreach(println)
 		sc.cassandraTable(keySpaceName, tableOrder).foreach(println)
 		sc.cassandraTable(keySpaceName, tableOrderLineItem).foreach(println)
@@ -78,6 +103,8 @@ class SparkSQLJoins()
 	{
 		val sqlContext = new SQLContext(sc)
 		import sqlContext._			//This is to get implicit access to its functions such as sql of SQLContext
+		sc.cassandraTable[Company](keySpaceName, tableCompany).registerTempTable(tableCompany)
+		sc.cassandraTable[Item](keySpaceName, tableItem).registerTempTable(tableItem)
 		sc.cassandraTable[Customer](keySpaceName, tableCustomer).registerTempTable(tableCustomer)
 		sc.cassandraTable[Order](keySpaceName, tableOrder).registerTempTable(tableOrder)
 		sc.cassandraTable[OrderLineItem](keySpaceName, tableOrderLineItem).registerTempTable(tableOrderLineItem)
@@ -125,6 +152,18 @@ class SparkSQLJoins()
 						"ORDER BY c.customername"
 		val rdd4 = sql(strSQL4)
 		rdd4.collect().foreach(println)
+		
+		//List the complete items list of all the companies by forming a cross join of the company table and item table
+		//Here for the CROSS JOIN, you just need to use the keyword JOIN without any WHERE clause. That will create a cartesian join
+		val strSQL5 =  "SELECT c.companyid, c.companyname, c.city, i.itemno, i.itemname, i.itemunit " + 
+						"FROM " +
+						tableCompany + " AS c " + 
+						"JOIN " +
+						tableItem + " AS i " + 
+						"ORDER BY c.companyid, i.itemno"
+		val rdd5 = sql(strSQL5)
+		rdd5.collect().foreach(println)
+		
 	}
 	
 	
@@ -134,6 +173,8 @@ class SparkSQLJoins()
 		//Cleanup the tables and key spaces created
 		CassandraConnector(conf).withSessionDo { session =>
 		  session.execute("DROP TABLE " + keySpaceName + "." + tableCustomer)
+		  session.execute("DROP TABLE " + keySpaceName + "." + tableCompany)
+		  session.execute("DROP TABLE " + keySpaceName + "." + tableItem)
 		  session.execute("DROP TABLE " + keySpaceName + "." + tableOrder)
 		  session.execute("DROP TABLE " + keySpaceName + "." + tableOrderLineItem)
 		  session.execute("DROP KEYSPACE " + keySpaceName)
