@@ -50,7 +50,7 @@ class SparkSQLPrimer()
 		rdd1.foreach(row => println( row.get[String]("accno") + ", " + row.get[String]("id")  + ", " + row.get[String]("amount")))
 	}
 
-	//This method compiles but has issues at run time because of an issue with the connector
+	//This method works only on the Spark 1.1.x 
 	//So purposefully this has not been called
 	def sqlQuery()
 	{
@@ -103,6 +103,7 @@ object SparkSQLPrimerApp {
 	  sparkSQLPrimer.accessData()
 	  
 	  println("SQL Queries")
+	  //sparkSQLPrimer.sqlQuery()			//This line works with only Spark 1.1.x
 	  sparkSQLPrimer.alternateSqlQuery()
 
 	  sparkSQLPrimer.cleanupCassandraObjects()
