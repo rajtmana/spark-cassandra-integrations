@@ -41,6 +41,7 @@ Note that all these code samples are developed and tested on a single node Cassa
 14. com.rajtmana.spark.cassandra.EventDataAnalysisApp - Event data analysis is a common requirement in many of the applications. Using Spark and Cassandra it is very easy to write map/reduce kind of data processing to do the event data analysis. This is a teaser application proving that point.
 15. com.rajtmana.spark.cassandra.TradeDataAnalysisApp - This is a trade data analysis application. NASDAQ's daily summary trade CSV file is read, and converted to an RDD using Scala case class and directly saved to a Cassandra table. Then using the Spark SQL, the data is read and did some basic analysis of the data.
 16. com.rajtmana.spark.cassandra.DrugEventDataAnalysisApp - This is a simple application containing drug/biologic information for many medications as were reported for the event with the data sample from the FDA ADVERSE EVENT REPORTING SYSTEM (FAERS). Spark SQL aggregation is being used to do the analysis. Data is publicly available from http://www.fda.gov/Drugs/GuidanceComplianceRegulatoryInformation/Surveillance/AdverseDrugEffects/ucm082193.htm
+17. com.rajtmana.spark.cassandra.FoodInspectionDataAnalysisApp - This is a food inspection data analysis application with sample data taken from https://data.cityofchicago.org/Health-Human-Services/Food-Inspections/4ijn-s7e5
 
 
 
