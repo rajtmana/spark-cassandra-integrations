@@ -123,6 +123,18 @@ class FoodInspectionDataAnalysis()
 		println("Top 10 inspection failed restaurants")
 		rdd6.foreach(println)
 
+		//Restaurants gone Out of business
+		val strSQL7 = "SELECT name, address " + 
+					 "FROM " +
+					 tableFoodInspec + " " +  
+					 "WHERE results = 'Out of Business' and facilitytype = 'Restaurant'" + 
+					 "ORDER BY name"
+					 
+		val rdd7 = sql(strSQL7).collect()
+		println("Restaurants gone out of business")
+		rdd7.foreach(println)
+
+
 	}
 	
 	def cleanupCassandraObjects()
